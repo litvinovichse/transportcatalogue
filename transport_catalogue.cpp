@@ -2,9 +2,11 @@
 // код сохраните в свой git-репозиторий
 #include "transport_catalogue.h"
 
-void TransportCatalogue::addBusToBase(std::string &busnum, std::vector<Stops> route)
+void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::string> route)
 {
-    _route[busnum] = route;
+    for(const auto &tmp : route){
+        _route[busnum].push_back(&stopname_to_stop[tmp]->name);
+    }
 }
 
 void TransportCatalogue::addStop(std::string &name, double &alt, double &longt)

@@ -24,9 +24,8 @@ void Recorder::newBus(TransportCatalogue& tc, std::string busData)
     std::string number = busData.substr(0, busData.find(':'));
     std::cout << number;
     busData = busData.substr(busData.find(':') + 2);
-    tc.addBusToBase(number);
     if(busData.find('>') != std::string::npos){
-
+        // std::vector<Stops> route
     } else {
 
     }
