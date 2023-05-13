@@ -8,6 +8,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <list>
 
 class TransportCatalogue{
 public:
@@ -16,13 +17,13 @@ public:
         double latitude{0};
         double longitude{0};
     };
-    void addBusToBase(std::string& busnum);
+    void addBusToBase(std::string& busnum, std::vector<Stops> route);
     void addStop(std::string &name, double &alt, double &longt);
     void searchRoute();
     void serchStop();
     void getDetailedRoute(); //Bus X: R stops on route, U unique stops, L route length
 private:
-    std::map <std::string, std::vector<Stops>> route; // поменять потом на unordered_map && hash функцию
+    std::map <std::string, std::vector<Stops>> _route; // поменять потом на unordered_map && hash функцию
     std::deque<Stops> allStops;
     std::unordered_map<std::string, Stops *> stopname_to_stop;
 };
