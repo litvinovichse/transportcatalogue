@@ -16,13 +16,11 @@ void Recorder::recordNewDataIntoBase(TransportCatalogue &tc)
     } else {
         return;
     }
-
 }
 
 void Recorder::newBus(TransportCatalogue& tc, std::string busData)
 {
     std::string number = busData.substr(0, busData.find(':'));
-    std::cout << number;
     busData = busData.substr(busData.find(':') + 2);
     if(busData.find('>') != std::string::npos){
         std::vector<std::string> stopsLocal;
@@ -33,7 +31,6 @@ void Recorder::newBus(TransportCatalogue& tc, std::string busData)
             pos = busData.find('>');
         }
         stopsLocal.push_back(busData);
-        std::cout << "\n*";
 
     } else if (busData.find('-') != std::string::npos){
         std::vector<std::string> stopsLocal;
