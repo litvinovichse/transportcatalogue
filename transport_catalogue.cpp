@@ -9,7 +9,7 @@ void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::stri
     }
 }
 
-void TransportCatalogue::addStop(std::string &name, double &alt, double &longt)
+void TransportCatalogue::addStop(const std::string &name, const double &alt, const double &longt)
 {
     allStops.push_back({name,alt,longt});
     stopname_to_stop[name] = &allStops.back();

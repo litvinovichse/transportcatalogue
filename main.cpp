@@ -1,7 +1,7 @@
 // напишите решение с нуля
 // код сохраните в свой git-репозиторий
 #include <iostream>
-#include "stat_reader.h"
+#include "input_reader.h"
 
 
 using namespace std;
