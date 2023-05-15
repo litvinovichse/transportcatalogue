@@ -21,8 +21,13 @@ void TransportCatalogue::addStop(const std::string &name, const double &alt, con
 
 std::string TransportCatalogue::getDetailedRoute(std::string requestVal)
 {
+    if (searchBuses(requestVal) != nullptr){
     std::string aaa = "Bus " + requestVal + ": " + std::to_string(searchBuses(requestVal)->stop.size());
     return aaa;
+    }
+    else {
+    return "empty";
+    }
 }
 
 const TransportCatalogue::Buses *TransportCatalogue::searchBuses(std::string value)
