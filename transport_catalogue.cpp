@@ -2,7 +2,7 @@
 // код сохраните в свой git-репозиторий
 #include "transport_catalogue.h"
 
-void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::string> stops, bool &circle)
+void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::string> stops, bool circle)
 {
     allBuses.push_back({busnum, stops, circle});
     finderBuses.insert(std::make_pair(allBuses.back().name, &allBuses.back()));

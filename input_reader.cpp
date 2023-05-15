@@ -4,7 +4,7 @@
 #include "input_reader.h"
 #include <iostream>
 
-void recordNewDataIntoBase(TransportCatalogue &tc)
+void Recorder::recordNewDataIntoBase(TransportCatalogue &tc)
 {
     std::string line;
     std::getline(std::cin, line);
@@ -18,7 +18,7 @@ void recordNewDataIntoBase(TransportCatalogue &tc)
     }
 }
 
-void newBus(TransportCatalogue& tc, std::string busData)
+void Recorder::newBus(TransportCatalogue& tc, std::string busData)
 {
     std::string number = busData.substr(0, busData.find(':'));
     busData = busData.substr(busData.find(':') + 2);
@@ -47,7 +47,7 @@ void newBus(TransportCatalogue& tc, std::string busData)
     }
 }
 
-void newStop(TransportCatalogue &tc, std::string stopData)
+void Recorder::newStop(TransportCatalogue &tc, std::string stopData)
 {
     std::string stopName = stopData.substr(0,stopData.find(':'));
     stopData = stopData.substr(stopData.find(':') + 2);

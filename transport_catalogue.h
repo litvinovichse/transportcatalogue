@@ -26,12 +26,6 @@ public:
         Coordinates coordinates;
     };
 
-    struct info{
-        size_t countStop;
-        size_t countUnique;
-        double distance;
-    };
-
     void addBusToBase(std::string& busnum, std::vector<std::string> stops, bool circle);
     void addStop(const std::string &name, const double &alt = 0, const double &longt = 0);
     const Buses *searchBuses(std::string& busName);
@@ -44,6 +38,8 @@ private:
 
     std::unordered_map<std::string_view, const Buses*> finderBuses;
     std::unordered_map<std::string_view, const Stops*> finderStops;
+
+    size_t countUnique;
 };
 
 
