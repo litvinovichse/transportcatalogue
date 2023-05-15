@@ -4,7 +4,7 @@
 #include "input_reader.h"
 #include <iostream>
 
-void Recorder::recordNewDataIntoBase(TransportCatalogue &tc)
+void recordNewDataIntoBase(TransportCatalogue &tc)
 {
     std::string line;
     std::getline(std::cin, line);
@@ -18,7 +18,7 @@ void Recorder::recordNewDataIntoBase(TransportCatalogue &tc)
     }
 }
 
-void Recorder::newBus(TransportCatalogue& tc, std::string busData)
+void newBus(TransportCatalogue& tc, std::string busData)
 {
     std::string number = busData.substr(0, busData.find(':'));
     busData = busData.substr(busData.find(':') + 2);
@@ -32,6 +32,8 @@ void Recorder::newBus(TransportCatalogue& tc, std::string busData)
         }
         stopsLocal.push_back(busData);
 
+        tc.addBusToBase(number, stopsLocal, true);
+
     } else if (busData.find('-') != std::string::npos){
         std::vector<std::string> stopsLocal;
         std::size_t pos = busData.find('-');
@@ -41,10 +43,11 @@ void Recorder::newBus(TransportCatalogue& tc, std::string busData)
             pos = busData.find('-');
         }
         stopsLocal.push_back(busData);
+        tc.addBusToBase(number, stopsLocal, false);
     }
 }
 
-void Recorder::newStop(TransportCatalogue &tc, std::string stopData)
+void newStop(TransportCatalogue &tc, std::string stopData)
 {
     std::string stopName = stopData.substr(0,stopData.find(':'));
     stopData = stopData.substr(stopData.find(':') + 2);

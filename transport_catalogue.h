@@ -26,36 +26,24 @@ public:
         Coordinates coordinates;
     };
 
-    void addBusToBase(std::string& busnum, std::vector<std::string> stops, bool& circle);
+    struct info{
+        size_t countStop;
+        size_t countUnique;
+        double distance;
+    };
+
+    void addBusToBase(std::string& busnum, std::vector<std::string> stops, bool circle);
     void addStop(const std::string &name, const double &alt = 0, const double &longt = 0);
-    void searchRoute();
-    void serchStop();
-    void getDetailedRoute();
+    const Buses *searchBuses(std::string& busName);
+    const Stops *serchStop(std::string& stopName);
+    void getDetailedRoute(std::string& requestVal);
 private:
-    //должны быть :
-    /* 1. набор маршрутов - контейнер структур.*/
-    std::deque<Buses> allBusses;
-    /* 2. маршрут(автобус) - структура. состоит из имени автобуса + контейнер структур остановок (тут ссылки должны быть).*/
-    /* 3. структура остановки, состоящая из имени + структуры координат, которая находится в файле geo.
-    */
 
-
-
-
-
-
-
-    ////для автобусов
-    //весь перечень
-
-    //поиск
-    std::unordered_map<std::string, std::vector<std::string *>> rote_of_buses;
-
-    ////для остановок
-    //весь перечень
     std::deque<Stops> allStops;
-    //поиск
-    std::unordered_map<std::string_view, Stops *> stopname_to_stop;
+    std::deque<Buses> allBuses;
+
+    std::unordered_map<std::string_view, const Buses*> finderBuses;
+    std::unordered_map<std::string_view, const Stops*> finderStops;
 };
 
 
