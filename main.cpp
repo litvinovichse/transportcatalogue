@@ -15,4 +15,5 @@ int main()
         for (int i {1}; i <= stoi(counter); ++i){
         rec.recordNewDataIntoBase(tc);
     }
+        std::cout << tc.getDetailedRoute("256") << endl;
 }

@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <vector>
 #include <list>
+#include <set>
 
 #include "geo.h"
 
@@ -26,20 +27,26 @@ public:
         Coordinates coordinates;
     };
 
-    void addBusToBase(std::string& busnum, std::vector<std::string> stops, bool circle);
+
+
+    void addBusToBase(std::string &busnum, std::vector<std::string> stops,
+                      bool circle);
     void addStop(const std::string &name, const double &alt = 0, const double &longt = 0);
-    const Buses *searchBuses(std::string& busName);
-    const Stops *serchStop(std::string& stopName);
-    void getDetailedRoute(std::string& requestVal);
+//    auto searchBuses(std::string& busName);
+//    const Stops *serchStop(std::string& stopName);
+    std::string getDetailedRoute(std::string requestVal);
 private:
+
+    const Buses* searchBuses(std::string value);
+    const Stops* searchStops(std::string value);
 
     std::deque<Stops> allStops;
     std::deque<Buses> allBuses;
 
-    std::unordered_map<std::string_view, const Buses*> finderBuses;
     std::unordered_map<std::string_view, const Stops*> finderStops;
+    std::unordered_map<std::string_view, const Buses*> finderBuses;
 
-    size_t countUnique;
+    std::unordered_map<std::string, std::set<std::string>> uniqueStops; //остановка - автобусы, в которых она присутствует
 };
 
 
