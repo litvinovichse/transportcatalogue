@@ -6,7 +6,8 @@
 void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::string> stops, bool circle)
 {
     allBuses.push_back({busnum, stops, circle});
-    finderBuses.insert(std::make_pair(allBuses.back().name, &allBuses.back()));
+    std::string_view a = allBuses.back().name;
+    finderBuses.insert(std::make_pair(a, &allBuses.back()));
     for (const auto& s : stops){
             uniqueStops[s].insert(busnum);
     }
