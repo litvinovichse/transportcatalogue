@@ -21,8 +21,13 @@ void TransportCatalogue::addStop(const std::string &name, const double &alt, con
 
 std::string TransportCatalogue::getDetailedRoute(std::string requestVal)
 {
+    size_t counter = 0;
     if (searchBuses(requestVal) != nullptr){
-    std::string aaa = "Bus " + requestVal + ": " + std::to_string(searchBuses(requestVal)->stop.size());
+            for(auto &a : uniqueStops){
+                if (a.second.count(requestVal) && a.second.size() == 1) { ++counter; }
+                else { continue; }
+            }
+            std::string aaa = "Bus " + requestVal + ": " + std::to_string(searchBuses(requestVal)->stop.size()) + "unique: " + std::to_string(counter);
     return aaa;
     }
     else {
@@ -33,6 +38,7 @@ std::string TransportCatalogue::getDetailedRoute(std::string requestVal)
 const TransportCatalogue::Buses *TransportCatalogue::searchBuses(std::string value)
 {
     if (finderBuses.find(value) != finderBuses.end()){
+    std::cout<< "dsdsd";
             return finderBuses.find(value)->second;
     }
     return nullptr;
@@ -41,6 +47,7 @@ const TransportCatalogue::Buses *TransportCatalogue::searchBuses(std::string val
 const TransportCatalogue::Stops *TransportCatalogue::searchStops(std::string value)
 {
     if (finderStops.find(value) != finderStops.end()){
+            std::cout<< "dsdsd";
             return finderStops.find(value)->second;
     }
     return nullptr;
