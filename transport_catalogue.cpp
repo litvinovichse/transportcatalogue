@@ -20,19 +20,16 @@ void TransportCatalogue::addStop(const std::string &name, const double &alt, con
     finderStops.insert(std::make_pair(allStops.back().name, &allStops.back()));
 }
 
-std::string TransportCatalogue::getDetailedRoute(std::string requestVal)
+TransportCatalogue::Info TransportCatalogue::getDetailedRoute(std::string requestVal)
 {
-    size_t counter = 0;
-    if (searchBuses(requestVal) != nullptr){
-            for(auto &a : uniqueStops){
-                if (a.second.count(requestVal) && a.second.size() == 1) { ++counter; }
-                else { continue; }
-            }
-            std::string aaa = "Bus " + requestVal + ": " + std::to_string(searchBuses(requestVal)->stop.size()) + "unique: " + std::to_string(counter);
-    return aaa;
+    size_t countStops = 0;
+    size_t countUniqueStops = 0;
+    auto sb = searchBuses(requestVal);
+    if (sb != nullptr){
+
     }
     else {
-    return "empty";
+            return {false, 0,0};
     }
 }
 
