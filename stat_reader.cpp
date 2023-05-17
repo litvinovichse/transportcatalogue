@@ -5,8 +5,6 @@ void output::Stat::parseRequest(TransportCatalogue &tc)
 {
     std::string line;
     std::getline(std::cin, line);
-//    line = line.substr(line.find_first_of(' ') + 1);
-//    bus(tc, line);
     if (line.substr(0, line.find_first_of(' ')) == "Bus"){
         line = line.substr(line.find_first_of(' ') + 1);
         bus(tc, line);
@@ -23,7 +21,8 @@ void output::Stat::bus(TransportCatalogue &tc, std::string request)
         std::cout << "Bus " << request << ": not found" << std::endl;
         return;
     }
-    std::cout << "Bus " << request <<": " << detail.stopsCount << " stops on route, " << detail.uniqueStopsCount << " unique stops, " << detail.length <<" route length" << std::endl;;
+    std::cout << "Bus " << request <<": " << detail.stopsCount << " stops on route, " << detail.uniqueStopsCount << " unique stops, "
+              << detail.curvature <<" route length, " << detail.curvature/detail.length << " curvature" << std::endl;;
 }
 
 void output::Stat::stop(TransportCatalogue &tc, std::string name)
@@ -36,7 +35,7 @@ void output::Stat::stop(TransportCatalogue &tc, std::string name)
             std::cout << "Stop " << name << ": no buses" << std::endl;
         } else {
             std::cout << "Stop " << name << ": buses ";
-            for(auto bus : a){
+            for(const auto &bus : a){
                 std::cout << bus << " ";
             }
             std::cout << std::endl;

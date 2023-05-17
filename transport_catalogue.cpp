@@ -7,18 +7,16 @@
 void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::string> stops, bool circle)
 {
     allBuses.push_back({busnum, stops, circle});
-    std::string_view a = allBuses.back().name;
-    finderBuses[a] = &allBuses.back();
+    finderBuses[allBuses.back().name] = &allBuses.back();
     for (const auto &a : allBuses.back().stop){
         bussesForStop[a].insert(busnum);
     }
 }
 
-void TransportCatalogue::addStop(const std::string &name, const double &lat, const double &longt)
+void TransportCatalogue::addStop(const std::string &name, const double &lat, const double &longt, std::map<std::string, int> nb)
 {
-    allStops.push_back({name,{lat,longt}});
-    std::string_view a = allStops.back().name;
-    finderStops[a] = &allStops.back();
+    allStops.push_back({name,{lat,longt}, nb});
+    finderStops[allStops.back().name] = &allStops.back();
 }
 
 size_t TransportCatalogue::UniqueStopsCount(std::string_view bus_number) const
@@ -32,27 +30,47 @@ size_t TransportCatalogue::UniqueStopsCount(std::string_view bus_number) const
 
 TransportCatalogue::Info TransportCatalogue::getDetailedRoute(std::string requestVal)
 {
+
+
     auto temp = finderBuses.find(requestVal);
-    if (temp == finderBuses.end()) { return {0,0,0,false};}
+    if (temp == finderBuses.end()) { return {0,0,0,0,false};}
     size_t stopsCount{ 0 };
     size_t uniqueStopsCount{ 0 };
     double length{ 0 };
+    double curva{ 0.0 };
+
     if (searchBuses(requestVal)->circle){
         stopsCount = temp->second->stop.size();
     } else {
         stopsCount = temp->second->stop.size() * 2 - 1;
     }
 
+    for (auto a : allStops){
+        for (auto b : a.nbs){
+            std::cout << a.name << "содержит в себе соседа: " << b.first << " " << b.second << std::endl;
+        }
+    }
+
+//    for(const auto &a : temp->second->stop){
+//        for (const auto &[nb, dist] : finderStops.at(a)->nbs)
+//            SetDistance(finderStops.at(a), finderStops.at(nb), dist);
+//    }
+
     uniqueStopsCount = UniqueStopsCount(requestVal);
 
 
     for (size_t i {1}; i < temp->second->stop.size(); ++i){
         length+= ComputeDistance(finderStops.at(temp->second->stop[i-1])->coordinates,finderStops.at(temp->second->stop[i])->coordinates);
+        curva += GetDistance(finderStops.at(temp->second->stop[i-1]), finderStops.at(temp->second->stop[i]));
+        std::cout << "***" << temp->second->stop[i-1] << " " << temp->second->stop[i] << GetDistance(finderStops.at(temp->second->stop[i-1]), finderStops.at(temp->second->stop[i])) << std::endl;
     }
     if (!temp->second->circle){
         length = length * 2;
     }
-    return {stopsCount, uniqueStopsCount, length, true};
+
+
+
+    return {stopsCount, uniqueStopsCount, length, curva, true};
 }
 
 std::set<std::string> TransportCatalogue::getStopsForBus(std::string busName)
@@ -78,5 +96,20 @@ const TransportCatalogue::Stops *TransportCatalogue::searchStops(std::string val
         return finderStops.find(value)->second;
     }
     return nullptr;
+}
+
+void TransportCatalogue::SetDistance(const Stops *from, const Stops *to, const int distance)
+{
+    stop_distances_[{from, to}] = distance;
+}
+
+int TransportCatalogue::GetDistance(const Stops *from, const Stops *to)
+{
+    if (stop_distances_.count({ from, to })) {
+        return stop_distances_.at({ from, to });
+    } else if (stop_distances_.count({ to, from })){
+        return stop_distances_.at({ to, from });
+    }
+    return 0;
 }
 

@@ -49,10 +49,33 @@ void Recorder::newBus(TransportCatalogue& tc, std::string busData)
 
 void Recorder::newStop(TransportCatalogue &tc, std::string stopData)
 {
+    std::map<std::string, int> ret;
+    double dist1{0};
+    double dist2{0};
     std::string stopName = stopData.substr(0,stopData.find(':'));
     stopData = stopData.substr(stopData.find(':') + 2);
     double alt = std::stod(stopData.substr(0, stopData.find(',')));
     stopData = stopData.substr(stopData.find(',') + 2);
-    double longt = std::stod(stopData);
-    tc.addStop(stopName, alt, longt);
+    double longt;
+    if (stopData.find(',') == std::string::npos){
+        longt = std::stod(stopData);
+        tc.addStop(stopName,alt,longt,{});
+        return;
+    } else {
+        longt = std::stod(stopData.substr(0, stopData.find(',')));
+        stopData = stopData.substr(stopData.find(',') + 2);
+    }
+    int dist{0};
+    std::string nbName;
+    while(stopData.find(',') != std::string::npos){
+        dist = std::stoi(stopData.substr(0, stopData.find('m')));
+        stopData = stopData.substr(stopData.find('m') + 6);
+        nbName = stopData.substr(0, stopData.find(','));
+        stopData = stopData.substr(stopData.find(','));
+        ret.insert({nbName, dist});
+    }
+    dist = std::stoi(stopData.substr(0, stopData.find('m')));
+    stopData = stopData.substr(stopData.find('m') + 5);
+    nbName = stopData;
+    ret.insert({nbName, dist});
 }
