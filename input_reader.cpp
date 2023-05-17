@@ -53,10 +53,6 @@ void Recorder::newStop(TransportCatalogue &tc, std::string stopData)
     stopData = stopData.substr(stopData.find(':') + 2);
     double alt = std::stod(stopData.substr(0, stopData.find(',')));
     stopData = stopData.substr(stopData.find(',') + 2);
-    if (stopData.find(' ') != std::string::npos){
-        stopData.substr(0, stopData.find(' '));
-    }
     double longt = std::stod(stopData);
-    std::cout << "name:" << stopName << "alt:" << alt << "long:" << longt << "!" << std::endl;
     tc.addStop(stopName, alt, longt);
 }

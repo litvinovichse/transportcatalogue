@@ -1,6 +1,4 @@
-// напишите решение с нуля
-// код сохраните в свой git-репозиторий
-
+#pragma once
 #include <istream>
 #include "transport_catalogue.h"
 
