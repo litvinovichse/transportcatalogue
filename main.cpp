@@ -8,7 +8,7 @@ int main()
 {
     TransportCatalogue tc;
     Recorder rec;
-    Stat st;
+    output::Stat st;
     string counter{ "" };
     std::getline(std::cin, counter);
         for (int i {1}; i <= stoi(counter); ++i){

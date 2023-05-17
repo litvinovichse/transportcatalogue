@@ -51,6 +51,8 @@ private:
     std::unordered_map<std::string_view, const Stops*> finderStops;
     std::unordered_map<std::string_view, const Buses*> finderBuses;
 
+    std::unordered_map<std::string_view, std::unordered_set<std::string>> bussesForStop;
+
 
     //std::unordered_map<std::pair<const Stops*, const Stops*>, int> stop_distances_;
 };

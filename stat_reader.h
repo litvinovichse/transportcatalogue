@@ -1,9 +1,10 @@
 #pragma once
 #include "transport_catalogue.h"
-
+namespace output {
 class Stat{
 public:
     void parseRequest(TransportCatalogue& tc);
-    void output(TransportCatalogue& tc, std::string request);
-
+    void bus(TransportCatalogue& tc, std::string request);
+    void stop(TransportCatalogue& tc);
 };
+} //output
