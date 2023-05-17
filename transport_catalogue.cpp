@@ -9,6 +9,9 @@ void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::stri
     allBuses.push_back({busnum, stops, circle});
     std::string_view a = allBuses.back().name;
     finderBuses[a] = &allBuses.back();
+    for (const auto &a : allBuses.back().stop){
+        bussesForStop[a].insert(busnum);
+    }
 }
 
 void TransportCatalogue::addStop(const std::string &name, const double &lat, const double &longt)
@@ -43,20 +46,28 @@ TransportCatalogue::Info TransportCatalogue::getDetailedRoute(std::string reques
     uniqueStopsCount = UniqueStopsCount(requestVal);
 
 
-        for (size_t i {1}; i < temp->second->stop.size(); ++i){
-            length+= ComputeDistance(finderStops.at(temp->second->stop[i-1])->coordinates,finderStops.at(temp->second->stop[i])->coordinates);
-        }
-        if (!temp->second->circle){
-            length = length * 2;
-        }
+    for (size_t i {1}; i < temp->second->stop.size(); ++i){
+        length+= ComputeDistance(finderStops.at(temp->second->stop[i-1])->coordinates,finderStops.at(temp->second->stop[i])->coordinates);
+    }
+    if (!temp->second->circle){
+        length = length * 2;
+    }
     return {stopsCount, uniqueStopsCount, length, true};
+}
+
+std::set<std::string> TransportCatalogue::getStopsForBus(std::string busName)
+{
+    if (bussesForStop.count(busName)){
+        return bussesForStop.at(busName);
+    }
+    return {};
 }
 
 
 const TransportCatalogue::Buses *TransportCatalogue::searchBuses(std::string value)
 {
     if (finderBuses.find(value) != finderBuses.end()){
-            return finderBuses.find(value)->second;
+        return finderBuses.find(value)->second;
     }
     return nullptr;
 }
@@ -64,7 +75,7 @@ const TransportCatalogue::Buses *TransportCatalogue::searchBuses(std::string val
 const TransportCatalogue::Stops *TransportCatalogue::searchStops(std::string value)
 {
     if (finderStops.find(value) != finderStops.end()){
-            return finderStops.find(value)->second;
+        return finderStops.find(value)->second;
     }
     return nullptr;
 }

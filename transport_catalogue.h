@@ -38,12 +38,12 @@ public:
     void addStop(const std::string &name, const double &lat = 0, const double &longt = 0);
     size_t UniqueStopsCount(std::string_view bus_number) const;
     Info getDetailedRoute(std::string requestVal);
-
+    std::set<std::string> getStopsForBus(std::string busName);
+    const Buses* searchBuses(std::string value);
+    const Stops* searchStops(std::string value);
 
 private:
 
-    const Buses* searchBuses(std::string value);
-    const Stops* searchStops(std::string value);
 
     std::deque<Stops> allStops;
     std::deque<Buses> allBuses;
@@ -51,7 +51,7 @@ private:
     std::unordered_map<std::string_view, const Stops*> finderStops;
     std::unordered_map<std::string_view, const Buses*> finderBuses;
 
-    std::unordered_map<std::string_view, std::unordered_set<std::string>> bussesForStop;
+    std::unordered_map<std::string, std::set<std::string>> bussesForStop;
 
 
     //std::unordered_map<std::pair<const Stops*, const Stops*>, int> stop_distances_;

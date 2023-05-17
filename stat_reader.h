@@ -5,6 +5,6 @@ class Stat{
 public:
     void parseRequest(TransportCatalogue& tc);
     void bus(TransportCatalogue& tc, std::string request);
-    void stop(TransportCatalogue& tc);
+    void stop(TransportCatalogue& tc, std::string name);
 };
 } //output
