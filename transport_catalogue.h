@@ -16,7 +16,6 @@ public:
     struct Buses{
         std::string name;
         std::vector<std::string> stop;
-
         bool circle;
     };
 
@@ -44,7 +43,7 @@ public:
     };
 
     void addBusToBase(std::string &busnum, std::vector<std::string> stops, bool circle);
-    void addStop(const std::string &name, const double &lat, const double &longt);
+    void addStop(const std::string &name, const double &lat, const double &longt, std::map<std::string, int> nb);
     size_t UniqueStopsCount(std::string_view bus_number) const;
     Info getDetailedRoute(std::string requestVal);
     std::set<std::string> getStopsForBus(std::string busName);

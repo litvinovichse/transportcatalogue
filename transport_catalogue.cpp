@@ -13,10 +13,12 @@ void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::stri
     }
 }
 
-void TransportCatalogue::addStop(const std::string &name, const double &lat, const double &longt)
+void TransportCatalogue::addStop(const std::string &name, const double &lat, const double &longt, std::map<std::string, int> nb)
 {
     allStops.push_back({name,{lat,longt}});
     finderStops[allStops.back().name] = &allStops.back();
+
+    nbs[name] = nb;
 }
 
 size_t TransportCatalogue::UniqueStopsCount(std::string_view bus_number) const
@@ -30,8 +32,6 @@ size_t TransportCatalogue::UniqueStopsCount(std::string_view bus_number) const
 
 TransportCatalogue::Info TransportCatalogue::getDetailedRoute(std::string requestVal)
 {
-
-
     auto temp = finderBuses.find(requestVal);
     if (temp == finderBuses.end()) { return {0,0,0,0,false};}
     size_t stopsCount{ 0 };
@@ -45,24 +45,23 @@ TransportCatalogue::Info TransportCatalogue::getDetailedRoute(std::string reques
         stopsCount = temp->second->stop.size() * 2 - 1;
     }
 
-//    for (auto a : allStops){
-//        for (auto b : a.nbs){
-//            std::cout << a.name << "содержит в себе соседа: " << b.first << " " << b.second << std::endl;
-//        }
-//    }
-
-//    for(const auto &a : temp->second->stop){
-//        for (const auto &[nb, dist] : finderStops.at(a)->nbs)
-//            SetDistance(finderStops.at(a), finderStops.at(nb), dist);
-//    }
+    for (const auto &a : nbs){
+        for (const auto &b : nbs.at(requestVal)){
+            SetDistance(finderStops.at(a.first), finderStops.at(b.first), b.second);
+        }
+    }
 
     uniqueStopsCount = UniqueStopsCount(requestVal);
 
 
     for (size_t i {1}; i < temp->second->stop.size(); ++i){
         length+= ComputeDistance(finderStops.at(temp->second->stop[i-1])->coordinates,finderStops.at(temp->second->stop[i])->coordinates);
-        curva += GetDistance(finderStops.at(temp->second->stop[i-1]), finderStops.at(temp->second->stop[i]));
-        std::cout << "***" << temp->second->stop[i-1] << " " << temp->second->stop[i] << GetDistance(finderStops.at(temp->second->stop[i-1]), finderStops.at(temp->second->stop[i])) << std::endl;
+        if (!temp->second->circle) {
+            curva += GetDistance(finderStops.at(temp->second->stop[i-1]), finderStops.at(temp->second->stop[i])) +
+                GetDistance(finderStops.at(temp->second->stop[i]), finderStops.at(temp->second->stop[i-1]));
+        } else {
+            curva += GetDistance(finderStops.at(temp->second->stop[i-1]), finderStops.at(temp->second->stop[i]));
+        }
     }
     if (!temp->second->circle){
         length = length * 2;
