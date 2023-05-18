@@ -13,9 +13,9 @@ void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::stri
     }
 }
 
-void TransportCatalogue::addStop(const std::string &name, const double &lat, const double &longt, std::map<std::string, int> nb)
+void TransportCatalogue::addStop(const std::string &name, const double &lat, const double &longt)
 {
-    allStops.push_back({name,{lat,longt}, nb});
+    allStops.push_back({name,{lat,longt}});
     finderStops[allStops.back().name] = &allStops.back();
 }
 
@@ -45,11 +45,11 @@ TransportCatalogue::Info TransportCatalogue::getDetailedRoute(std::string reques
         stopsCount = temp->second->stop.size() * 2 - 1;
     }
 
-    for (auto a : allStops){
-        for (auto b : a.nbs){
-            std::cout << a.name << "содержит в себе соседа: " << b.first << " " << b.second << std::endl;
-        }
-    }
+//    for (auto a : allStops){
+//        for (auto b : a.nbs){
+//            std::cout << a.name << "содержит в себе соседа: " << b.first << " " << b.second << std::endl;
+//        }
+//    }
 
 //    for(const auto &a : temp->second->stop){
 //        for (const auto &[nb, dist] : finderStops.at(a)->nbs)

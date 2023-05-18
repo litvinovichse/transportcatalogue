@@ -49,33 +49,40 @@ void Recorder::newBus(TransportCatalogue& tc, std::string busData)
 
 void Recorder::newStop(TransportCatalogue &tc, std::string stopData)
 {
+    std::string test;
     std::map<std::string, int> ret;
-    double dist1{0};
-    double dist2{0};
     std::string stopName = stopData.substr(0,stopData.find(':'));
     stopData = stopData.substr(stopData.find(':') + 2);
     double alt = std::stod(stopData.substr(0, stopData.find(',')));
     stopData = stopData.substr(stopData.find(',') + 2);
     double longt;
     if (stopData.find(',') == std::string::npos){
-        longt = std::stod(stopData);
-        tc.addStop(stopName,alt,longt,{});
+        //longt = std::stod(stopData);
+        tc.addStop(stopName,alt,longt);
         return;
     } else {
-        longt = std::stod(stopData.substr(0, stopData.find(',')));
+        //longt = std::stod(stopData.substr(0, stopData.find(',')));
         stopData = stopData.substr(stopData.find(',') + 2);
     }
     int dist{0};
     std::string nbName;
     while(stopData.find(',') != std::string::npos){
-        dist = std::stoi(stopData.substr(0, stopData.find('m')));
-        stopData = stopData.substr(stopData.find('m') + 6);
+        //dist = std::stoi(stopData.substr(0, stopData.find('m')));
+        stopData = stopData.substr(stopData.find('m') + 5);
         nbName = stopData.substr(0, stopData.find(','));
         stopData = stopData.substr(stopData.find(','));
         ret.insert({nbName, dist});
     }
-    dist = std::stoi(stopData.substr(0, stopData.find('m')));
+    //dist = std::stoi(stopData.substr(0, stopData.find('m')));
     stopData = stopData.substr(stopData.find('m') + 5);
     nbName = stopData;
     ret.insert({nbName, dist});
+    //ret.insert({nbName, dist});
+
+    std::cout << stopName << "|" << alt << "|" << longt << "|";
+    for(const auto &[name, dist] : ret){
+        std::cout << name << "|" << dist << "|";
+    }
+    //неправильно парсит остановки. Надо заполнять nbs, потом итерироваться по ним создавая setDistance для всего
+
 }

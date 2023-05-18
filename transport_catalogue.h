@@ -23,7 +23,6 @@ public:
     struct Stops {
         std::string name{""};
         Coordinates coordinates;
-        std::map<std::string, int> nbs;
     };
 
     size_t uniqueStopsFill(std::string_view bus) const;
@@ -45,7 +44,7 @@ public:
     };
 
     void addBusToBase(std::string &busnum, std::vector<std::string> stops, bool circle);
-    void addStop(const std::string &name, const double &lat, const double &longt, std::map<std::string, int> nb);
+    void addStop(const std::string &name, const double &lat, const double &longt);
     size_t UniqueStopsCount(std::string_view bus_number) const;
     Info getDetailedRoute(std::string requestVal);
     std::set<std::string> getStopsForBus(std::string busName);
@@ -67,6 +66,7 @@ private:
 
 
     std::unordered_map<std::pair<const Stops*, const Stops*>, int, StopDistancesHasher> stop_distances_;
+    std::unordered_map<std::string, std::map<std::string, int>> nbs; // <stop name,<neighbourName, dist>>
 };
 
 
