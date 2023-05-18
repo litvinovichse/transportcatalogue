@@ -45,12 +45,6 @@ TransportCatalogue::Info TransportCatalogue::getDetailedRoute(std::string reques
         stopsCount = temp->second->stop.size() * 2 - 1;
     }
 
-    for (const auto &a : nbs){
-        for (const auto &b : nbs.at(requestVal)){
-            SetDistance(finderStops.at(a.first), finderStops.at(b.first), b.second);
-        }
-    }
-
     uniqueStopsCount = UniqueStopsCount(requestVal);
 
 
@@ -110,5 +104,14 @@ int TransportCatalogue::GetDistance(const Stops *from, const Stops *to)
         return stop_distances_.at({ to, from });
     }
     return 0;
+}
+
+void TransportCatalogue::fillDistance()
+{
+    for (const auto &a : nbs){
+        for (const auto &b : nbs.at(requestVal)){
+            SetDistance(finderStops.at(a.first), finderStops.at(b.first), b.second);
+        }
+    }
 }
 
