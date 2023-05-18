@@ -3,8 +3,8 @@
 namespace output {
 class Stat{
 public:
-    void parseRequest(TransportCatalogue& tc);
-    void bus(TransportCatalogue& tc, std::string request);
-    void stop(TransportCatalogue& tc, std::string name);
+    void parseRequest(BusCatalogue::TransportCatalogue& tc);
+    void bus(BusCatalogue::TransportCatalogue& tc, std::string request);
+    void stop(BusCatalogue::TransportCatalogue& tc, std::string name);
 };
 } //output

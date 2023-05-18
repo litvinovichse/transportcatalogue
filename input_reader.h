@@ -4,9 +4,9 @@
 
 class Recorder{
 public:
-    void recordNewDataIntoBase(TransportCatalogue& tc);
-    void newBus(TransportCatalogue& tc, std::string BusData);
-    void newStop(TransportCatalogue& tc, std::string StopData);
+    void recordNewDataIntoBase(BusCatalogue::TransportCatalogue& tc);
+    void newBus(BusCatalogue::TransportCatalogue& tc, std::string BusData);
+    void newStop(BusCatalogue::TransportCatalogue& tc, std::string StopData);
 
 private:
 };

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <unordered_set>
 
-void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::string> stops, bool circle)
+void BusCatalogue::TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::string> stops, bool circle)
 {
     allBuses.push_back({busnum, stops, circle});
     finderBuses[allBuses.back().name] = &allBuses.back();
@@ -13,7 +13,7 @@ void TransportCatalogue::addBusToBase(std::string& busnum, std::vector<std::stri
     }
 }
 
-void TransportCatalogue::addStop(const std::string &name, const double &lat, const double &longt, std::map<std::string, int> nb)
+void BusCatalogue::TransportCatalogue::addStop(const std::string &name, const double &lat, const double &longt, std::map<std::string, int> nb)
 {
     allStops.push_back({name,{lat,longt}});
     finderStops[allStops.back().name] = &allStops.back();
@@ -21,7 +21,7 @@ void TransportCatalogue::addStop(const std::string &name, const double &lat, con
     nbs[name] = nb;
 }
 
-size_t TransportCatalogue::UniqueStopsCount(std::string_view bus_number) const
+size_t BusCatalogue::TransportCatalogue::UniqueStopsCount(std::string_view bus_number) const
 {
     std::unordered_set<std::string_view> unique_stops;
     for (const auto& stop : finderBuses.at(bus_number)->stop) {
@@ -30,7 +30,7 @@ size_t TransportCatalogue::UniqueStopsCount(std::string_view bus_number) const
     return unique_stops.size();
 }
 
-TransportCatalogue::Info TransportCatalogue::getDetailedRoute(std::string requestVal)
+BusData::Info BusCatalogue::TransportCatalogue::getDetailedRoute(std::string requestVal)
 {
     auto temp = finderBuses.find(requestVal);
     if (temp == finderBuses.end()) { return {0,0,0,0,false};}
@@ -66,7 +66,7 @@ TransportCatalogue::Info TransportCatalogue::getDetailedRoute(std::string reques
     return {stopsCount, uniqueStopsCount, length, curva, true};
 }
 
-std::set<std::string> TransportCatalogue::getStopsForBus(std::string busName)
+std::set<std::string> BusCatalogue::TransportCatalogue::getStopsForBus(std::string busName)
 {
     if (bussesForStop.count(busName)){
         return bussesForStop.at(busName);
@@ -75,7 +75,7 @@ std::set<std::string> TransportCatalogue::getStopsForBus(std::string busName)
 }
 
 
-const TransportCatalogue::Buses *TransportCatalogue::searchBuses(std::string value)
+const BusData::Buses *BusCatalogue::TransportCatalogue::searchBuses(std::string value)
 {
     if (finderBuses.find(value) != finderBuses.end()){
         return finderBuses.find(value)->second;
@@ -83,7 +83,7 @@ const TransportCatalogue::Buses *TransportCatalogue::searchBuses(std::string val
     return nullptr;
 }
 
-const TransportCatalogue::Stops *TransportCatalogue::searchStops(std::string value)
+const BusData::Stops *BusCatalogue::TransportCatalogue::searchStops(std::string value)
 {
     if (finderStops.find(value) != finderStops.end()){
         return finderStops.find(value)->second;
@@ -91,12 +91,12 @@ const TransportCatalogue::Stops *TransportCatalogue::searchStops(std::string val
     return nullptr;
 }
 
-void TransportCatalogue::SetDistance(const Stops *from, const Stops *to, const int distance)
+void BusCatalogue::TransportCatalogue::SetDistance(const BusData::Stops *from, const BusData::Stops *to, const int distance)
 {
     stop_distances_[{from, to}] = distance;
 }
 
-int TransportCatalogue::GetDistance(const Stops *from, const Stops *to)
+int BusCatalogue::TransportCatalogue::GetDistance(const BusData::Stops *from, const BusData::Stops *to)
 {
     if (stop_distances_.count({ from, to })) {
         return stop_distances_.at({ from, to });
@@ -106,10 +106,10 @@ int TransportCatalogue::GetDistance(const Stops *from, const Stops *to)
     return 0;
 }
 
-void TransportCatalogue::fillDistance()
+void BusCatalogue::TransportCatalogue::fillDistance()
 {
     for (const auto &a : nbs){
-        for (const auto &b : nbs.at(requestVal)){
+        for (const auto &b : a.second){
             SetDistance(finderStops.at(a.first), finderStops.at(b.first), b.second);
         }
     }

@@ -1,7 +1,7 @@
 #include "stat_reader.h"
 #include <iostream>
 
-void output::Stat::parseRequest(TransportCatalogue &tc)
+void output::Stat::parseRequest(BusCatalogue::TransportCatalogue &tc)
 {
     std::string line;
     std::getline(std::cin, line);
@@ -14,7 +14,7 @@ void output::Stat::parseRequest(TransportCatalogue &tc)
     }
 }
 
-void output::Stat::bus(TransportCatalogue &tc, std::string request)
+void output::Stat::bus(BusCatalogue::TransportCatalogue& tc, std::string request)
 {
     auto detail = tc.getDetailedRoute(request);
     if (!detail.correct){
@@ -25,7 +25,7 @@ void output::Stat::bus(TransportCatalogue &tc, std::string request)
               << detail.curvature <<" route length, " << detail.curvature/detail.length << " curvature" << std::endl;;
 }
 
-void output::Stat::stop(TransportCatalogue &tc, std::string name)
+void output::Stat::stop(BusCatalogue::TransportCatalogue& tc, std::string name)
 {
     if (tc.searchStops(name) == nullptr){
         std::cout << "Stop " << name << ": not found" << std::endl;
