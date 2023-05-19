@@ -1,48 +1,57 @@
 #include "stat_reader.h"
 #include <iostream>
 
-void output::Stat::parseRequest(BusCatalogue::TransportCatalogue &tc)
+void Output::parseRequest(std::ostream &os, BusCatalogue::TransportCatalogue &tc)
 {
     std::string line;
     std::getline(std::cin, line);
     if (line.substr(0, line.find_first_of(' ')) == "Bus"){
         line = line.substr(line.find_first_of(' ') + 1);
-        bus(tc, line);
+        printBus(os, tc, line);
     } else if(line.substr(0, line.find_first_of(' ')) == "Stop") {
         line = line.substr(line.find_first_of(' ') + 1);
-        stop(tc, line);
+        printStop(os, tc, line);
     }
 }
 
-void output::Stat::bus(BusCatalogue::TransportCatalogue& tc, std::string request)
+void Output::printBus(std::ostream &os, BusCatalogue::TransportCatalogue& tc, std::string request)
 {
     auto detail = tc.getDetailedRoute(request);
     if (!detail.correct){
-        std::cout << "Bus " << request << ": not found" << std::endl;
+        os << "Bus " << request << ": not found" << std::endl;
         return;
     }
-    std::cout << "Bus " << request <<": " << detail.stopsCount << " stops on route, " << detail.uniqueStopsCount << " unique stops, "
+    os << "Bus " << request <<": " << detail.stopsCount << " stops on route, " << detail.uniqueStopsCount << " unique stops, "
               << detail.curvature <<" route length, " << detail.curvature/detail.length << " curvature" << std::endl;;
 }
 
-void output::Stat::stop(BusCatalogue::TransportCatalogue& tc, std::string name)
+void Output::printStop(std::ostream &os, BusCatalogue::TransportCatalogue& tc, std::string name)
 {
     if (tc.searchStops(name) == nullptr){
-        std::cout << "Stop " << name << ": not found" << std::endl;
+        os << "Stop " << name << ": not found" << std::endl;
     } else {
         auto a = tc.getStopsForBus(name);
         if (a.empty()){
-            std::cout << "Stop " << name << ": no buses" << std::endl;
+            os << "Stop " << name << ": no buses" << std::endl;
         } else {
-            std::cout << "Stop " << name << ": buses ";
+            os << "Stop " << name << ": buses ";
             for(const auto &bus : a){
-                std::cout << bus << " ";
+                os << bus << " ";
             }
-            std::cout << std::endl;
+            os << std::endl;
         }
     }
 /*Stop X: buses bus1 bus2 ... busN
 bus1 bus2 ... busN — список автобусов, проходящих через остановку. Дубли не допускаются, названия должны быть отсортированы в алфавитном порядке.
 Если остановка X не найдена, выведите Stop X: not found.
 Если остановка X существует в базе, но через неё не проходят автобусы, выведите Stop X: no buses.*/
+}
+
+void Output::processInputRequest(std::ostream &os, BusCatalogue::TransportCatalogue& tc)
+{
+    std::string counter;
+    std::getline(std::cin, counter);
+    for (int i {1}; i <= stoi(counter); ++i){
+        Output::parseRequest(os, tc);
+    }
 }

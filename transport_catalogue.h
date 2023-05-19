@@ -15,12 +15,12 @@ namespace BusData {
 struct Buses{
     std::string name;
     std::vector<std::string> stop;
-    bool circle;
+    bool is_Circle;
 };
 
 struct Stops {
     std::string name{""};
-    Coordinates coordinates;
+    geo::Coordinates coordinates;
 };
 
 
@@ -49,18 +49,25 @@ namespace BusCatalogue {
 
 class TransportCatalogue{
 public:
-
-    size_t uniqueStopsFill(std::string_view bus) const;
-    void addBusToBase(std::string &busnum, std::vector<std::string> stops, bool circle);
-    void addStop(const std::string &name, const double &lat, const double &longt, std::map<std::string, int> nb);
-    size_t UniqueStopsCount(std::string_view bus_number) const;
-    BusData::Info getDetailedRoute(std::string requestVal);
+    void addBusToBase(const std::string &busnum, const std::vector<std::string>& stops, bool circle);
+    void addStop(const std::string &name, const double &lat, const double longt, std::map<std::string, int>& neighboringStops);
+    BusData::Info getDetailedRoute(std::string busName);
     std::set<std::string> getStopsForBus(std::string busName);
-    const BusData::Buses* searchBuses(std::string value);
-    const BusData::Stops* searchStops(std::string value);
+    const BusData::Buses* searchBuses(std::string busName);
+    const BusData::Stops* searchStops(std::string stopName);
     void SetDistance(const BusData::Stops* from, const BusData::Stops* to, const int distance);
     int GetDistance(const BusData::Stops* from, const BusData::Stops* to);
     void fillDistance();
+
+    /*
+     * Здравствуйте, Марина!
+    не совсем понял, что нужно в итоге сделать с этим методом (fillDistance).
+    Если перенести его в input_reader, то он будет заполняться с nullptr'ами,
+    а в таком случае, программа, разумеется, падает :(.
+    Остальное, вроде бы, все подправил, тесты тренажера проходит.
+    Спасибо Вам за Вашу помощь!
+    */
+
 private:
 
 
@@ -75,7 +82,7 @@ private:
 
 
     std::unordered_map<std::pair<const BusData::Stops*, const BusData::Stops*>, int, Hashers::StopDistancesHasher> stop_distances_;
-    std::unordered_map<std::string, std::map<std::string, int>> nbs; // <stop name,<neighbourName, dist>>
+    std::unordered_map<std::string, std::map<std::string, int>> allNeighboringStops; // <stop name,<neighbourName, dist>>
 };
 }//BusCatalogue
 

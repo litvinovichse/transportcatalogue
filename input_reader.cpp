@@ -4,21 +4,21 @@
 #include "input_reader.h"
 #include <iostream>
 
-void Recorder::recordNewDataIntoBase(BusCatalogue::TransportCatalogue &tc)
+void Input::parseRequest(BusCatalogue::TransportCatalogue &tc)
 {
     std::string line;
     std::getline(std::cin, line);
     std::string command = line.substr(0, line.find(' '));
     if (command == "Bus"){
-        newBus(tc, line.substr(line.find(' ') + 1));
+        parseBus(tc, line.substr(line.find(' ') + 1));
     } else if (command == "Stop"){
-        newStop(tc, line.substr(line.find(' ') + 1));
+        parseStop(tc, line.substr(line.find(' ') + 1));
     } else {
         return;
     }
 }
 
-void Recorder::newBus(BusCatalogue::TransportCatalogue& tc, std::string busData)
+void Input::parseBus(BusCatalogue::TransportCatalogue& tc, std::string busData)
 {
     std::string number = busData.substr(0, busData.find(':'));
     busData = busData.substr(busData.find(':') + 2);
@@ -47,7 +47,7 @@ void Recorder::newBus(BusCatalogue::TransportCatalogue& tc, std::string busData)
     }
 }
 
-void Recorder::newStop(BusCatalogue::TransportCatalogue &tc, std::string stopData)
+void Input::parseStop(BusCatalogue::TransportCatalogue &tc, std::string stopData)
 {
     std::string test;
     std::map<std::string, int> ret;
@@ -79,4 +79,16 @@ void Recorder::newStop(BusCatalogue::TransportCatalogue &tc, std::string stopDat
     ret[nbName] = dist;
 
     tc.addStop(stopName,alt,longt, ret);
+}
+
+void Input::processInputRequest(BusCatalogue::TransportCatalogue &tc)
+{
+
+    std::string counter{ "" };
+    std::getline(std::cin, counter);
+    for (int i {1}; i <= stoi(counter); ++i){
+        Input::parseRequest(tc);
+    }
+    tc.fillDistance();
+
 }
