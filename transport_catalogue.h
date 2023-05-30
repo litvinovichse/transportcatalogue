@@ -8,9 +8,31 @@
 #include <vector>
 #include <list>
 #include <set>
-#include "domain.h"
-#include "geo.h"
 
+#include "geo.h"
+namespace BusData {
+
+struct Buses{
+    std::string name;
+    std::vector<std::string> stop;
+    bool is_Circle;
+};
+
+struct Stops {
+    std::string name{""};
+    geo::Coordinates coordinates;
+};
+
+
+struct Info {
+    size_t stopsCount{ 0 };
+    size_t uniqueStopsCount{ 0 };
+    double length{ 0 };
+    double curvature{ 0 };
+    bool correct{ false };
+};
+
+}//BusData
 
 namespace Hashers {
 
@@ -36,6 +58,15 @@ public:
     void SetDistance(const BusData::Stops* from, const BusData::Stops* to, const int distance);
     int GetDistance(const BusData::Stops* from, const BusData::Stops* to);
     void fillDistance();
+
+    /*
+     * Здравствуйте, Марина!
+    не совсем понял, что нужно в итоге сделать с этим методом (fillDistance).
+    Если перенести его в input_reader, то он будет заполняться с nullptr'ами,
+    а в таком случае, программа, разумеется, падает :(.
+    Остальное, вроде бы, все подправил, тесты тренажера проходит.
+    Спасибо Вам за Вашу помощь!
+    */
 
 private:
 

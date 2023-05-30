@@ -1,5 +1,14 @@
 #pragma once
 
+#include "transport_catalogue.h"
+#include <string>
+struct Request{
+    int id{0};
+    std::string type;
+    std::string name;
+};
+
+void processReply(BusCatalogue::TransportCatalogue& tc, Request &req);
 /*
  * Здесь можно было бы разместить код обработчика запросов к базе, содержащего логику, которую не
  * хотелось бы помещать ни в transport_catalogue, ни в json reader.
