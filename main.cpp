@@ -1,14 +1,18 @@
 #include <iostream>
-#include "input_reader.h"
-#include "stat_reader.h"
+#include "json.h"
+#include "json_reader.h"
+#include "transport_catalogue.h"
 
 using namespace std;
 
 int main()
 {
-    BusCatalogue::TransportCatalogue tc;
 
-    Input::processInputRequest(tc);
-    Output::processInputRequest(std::cout, tc);
+    auto document = json::Load(std::cin);
+    BusCatalogue::TransportCatalogue tc;
+    json::Input::firstStep(tc, document);
+    tc.fillDistance();
+    processReply(std::cout,tc);
+
 }
 

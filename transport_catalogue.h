@@ -12,6 +12,12 @@
 #include "geo.h"
 namespace BusData {
 
+struct Request{
+    int id{0};
+    std::string type;
+    std::string name;
+};
+
 struct Buses{
     std::string name;
     std::vector<std::string> stop;
@@ -58,15 +64,8 @@ public:
     void SetDistance(const BusData::Stops* from, const BusData::Stops* to, const int distance);
     int GetDistance(const BusData::Stops* from, const BusData::Stops* to);
     void fillDistance();
-
-    /*
-     * Здравствуйте, Марина!
-    не совсем понял, что нужно в итоге сделать с этим методом (fillDistance).
-    Если перенести его в input_reader, то он будет заполняться с nullptr'ами,
-    а в таком случае, программа, разумеется, падает :(.
-    Остальное, вроде бы, все подправил, тесты тренажера проходит.
-    Спасибо Вам за Вашу помощь!
-    */
+    void addRequestToList(BusData::Request req);
+    std::vector<BusData::Request> getRequestList() const;
 
 private:
 
@@ -83,6 +82,7 @@ private:
 
     std::unordered_map<std::pair<const BusData::Stops*, const BusData::Stops*>, int, Hashers::StopDistancesHasher> stop_distances_;
     std::unordered_map<std::string, std::map<std::string, int>> allNeighboringStops; // <stop name,<neighbourName, dist>>
+    std::vector<BusData::Request> requestList;
 };
 }//BusCatalogue
 

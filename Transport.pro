@@ -7,9 +7,11 @@ CONFIG += c++17 cmdline
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        input_reader.cpp \
+        geo.cpp \
+        json.cpp \
+        json_reader.cpp \
         main.cpp \
-        stat_reader.cpp \
+        request_handler.cpp \
         transport_catalogue.cpp
 
 # Default rules for deployment.
@@ -19,6 +21,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     geo.h \
-    input_reader.h \
-    stat_reader.h \
+    json.h \
+    json_reader.h \
+    request_handler.h \
     transport_catalogue.h

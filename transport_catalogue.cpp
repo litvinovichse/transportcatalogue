@@ -3,6 +3,7 @@
 #include "transport_catalogue.h"
 #include <iostream>
 #include <unordered_set>
+#include "geo.h"
 
 void BusCatalogue::TransportCatalogue::addBusToBase(const std::string &busnum, const std::vector<std::string> &stops, bool circle)
 {
@@ -109,5 +110,15 @@ void BusCatalogue::TransportCatalogue::fillDistance()
             SetDistance(finderStops.at(a.first), finderStops.at(b.first), b.second);
         }
     }
+}
+
+void BusCatalogue::TransportCatalogue::addRequestToList(BusData::Request req)
+{
+    requestList.push_back(req);
+}
+
+std::vector<BusData::Request> BusCatalogue::TransportCatalogue::getRequestList() const
+{
+    return requestList;
 }
 
