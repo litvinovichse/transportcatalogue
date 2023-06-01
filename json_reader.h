@@ -14,7 +14,7 @@
 namespace json {
 namespace Input {
 
-void firstStep(BusCatalogue::TransportCatalogue& tc, Document &node, Request& req);
+void firstStep(BusCatalogue::TransportCatalogue& tc, Document &node);
 
 //void processInputRequest(BusCatalogue::TransportCatalogue& tc);
 //void parseRequest(BusCatalogue::TransportCatalogue& tc);

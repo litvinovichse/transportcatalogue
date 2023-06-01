@@ -1,13 +1,12 @@
 #include "json_reader.h"
 #include "json.h"
 #include "request_handler.h"
-#include <QDebug>
 namespace json {
 namespace Input {
 
 
 
-void firstStep(BusCatalogue::TransportCatalogue &tc, Document& requestArray, Request& req)
+void firstStep(BusCatalogue::TransportCatalogue &tc, Document& requestArray)
 {
     Node nDocument = requestArray.GetRoot(); // map
     if (nDocument.AsMap().count("base_requests")){
@@ -36,19 +35,15 @@ void firstStep(BusCatalogue::TransportCatalogue &tc, Document& requestArray, Req
         }
     }
     if (nDocument.AsMap().count("stat_requests")){
-        std::vector<Request> requ;
+        BusData::Request req;
         auto a = nDocument.AsMap().at("stat_requests");
          for (const auto& b : a.AsArray()){
             if (b.IsMap()){
                 req.id = b.AsMap().at("id").AsInt();
                 req.type = b.AsMap().at("type").AsString();
                 req.name = b.AsMap().at("name").AsString();
-                requ.push_back({req.id,req.type, req.name});
+                tc.addRequestToList({req.id, req.type, req.name});
             }
-        }
-         for (auto a : requ){
-
-            processReply(tc, req);
         }
     }
 

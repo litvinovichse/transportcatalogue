@@ -11,12 +11,42 @@
  */
 
 
-void processReply(BusCatalogue::TransportCatalogue &tc, Request& req)
+void processReply(std::ostream &os, BusCatalogue::TransportCatalogue &tc)
 {
-    if(req.type == "Bus"){
-        std::cout << "[{\"busses\"[\"" << req.name<< "\"],\"request_id\"" << std::to_string(req.id) << "}] ";
-    }
-    if (req.type == "Stop"){
+    os << "[\n";
+    for (const auto &req : tc.getRequestList()){
+        if(req.type == "Bus"){
+            auto data = tc.getDetailedRoute(req.name);
+            if (data.correct){
+                os << "{\n\"curvature\": " << data.curvature / data.length << ",\n"
+                   << "\"request_id\": " << req.id << ",\n"
+                   << "\"route_length\": " << data.curvature << ",\n"
+                   << "\"stop_count\": " << data.stopsCount << ",\n"
+                   << "\"unique_stop_count\": " << data.uniqueStopsCount << ",\n}";
+            }
 
+        }
+        if (req.type == "Stop"){
+            auto bussesOnStop = tc.getStopsForBus(req.name);
+            if (bussesOnStop.size() == 0){
+                os << "{\n";
+                os << "\"request_id\": " << req.id << "\n"
+                          <<"\"error_message\": \"not found\" \n}";
+            } else {
+                os << "{\"busses\": [";
+                bool firstLine = true;
+                for(const auto &bus : bussesOnStop){
+                    if (firstLine){
+                        os << "\"" << bus << "\"";
+                        firstLine = false;
+                    } else {
+                        os << ", ";
+                        os << "\"" << bus << "\"";
+                    }
+                }
+                os <<  "],\n\"request_id\": " << std::to_string(req.id) << "\n}, \n";
+            }
     }
+    }
+    os << "]";
 }

@@ -13,11 +13,10 @@ using namespace json;
 
 
 int main() {
-
-    Request req;
     TransportCatalogue tc;
     Document document = json::Load(std::cin);
-    json::Input::firstStep(tc,document,req);
+    json::Input::firstStep(tc,document);
     tc.fillDistance();
+    processReply(std::cout,tc);
 
 }

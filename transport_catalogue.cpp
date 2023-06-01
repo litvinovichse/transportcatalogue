@@ -110,3 +110,17 @@ void BusCatalogue::TransportCatalogue::fillDistance()
         }
     }
 }
+
+void BusCatalogue::TransportCatalogue::addRequestToList(BusData::Request req)
+{
+    requestList.push_back(req);
+}
+
+
+namespace BusCatalogue {
+std::vector<BusData::Request> TransportCatalogue::getRequestList() const
+{
+    return requestList;
+}
+
+}
