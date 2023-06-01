@@ -13,40 +13,40 @@
 
 void processReply(std::ostream &os, BusCatalogue::TransportCatalogue &tc)
 {
-    os << "[\n";
+    os << "НИЖЕ ИДЕТ ОТВЕТ \n\n\n[\n";
     for (const auto &req : tc.getRequestList()){
         if(req.type == "Bus"){
             auto data = tc.getDetailedRoute(req.name);
             if (data.correct){
-                os << "{\n\"curvature\": " << data.curvature / data.length << ",\n"
-                   << "\"request_id\": " << req.id << ",\n"
-                   << "\"route_length\": " << data.curvature << ",\n"
-                   << "\"stop_count\": " << data.stopsCount << ",\n"
-                   << "\"unique_stop_count\": " << data.uniqueStopsCount << ",\n}";
+                os << "  {\n    \"curvature\": " << data.curvature / data.length << ",\n"
+                   << "    \"request_id\": " << req.id << ",\n"
+                   << "    \"route_length\": " << data.curvature << ",\n"
+                   << "    \"stop_count\": " << data.stopsCount << ",\n"
+                   << "    \"unique_stop_count\": " << data.uniqueStopsCount << "\n  }\n";
             }
 
         }
         if (req.type == "Stop"){
             auto bussesOnStop = tc.getStopsForBus(req.name);
             if (bussesOnStop.size() == 0){
-                os << "{\n";
-                os << "\"request_id\": " << req.id << "\n"
-                          <<"\"error_message\": \"not found\" \n}";
+                os << "  {\n";
+                os << "    request_id\": " << req.id << "\n"
+                          <<"    error_message\": \"not found\" \n  }";
             } else {
-                os << "{\"busses\": [";
+                os << "  {\n    buses\": [\n";
                 bool firstLine = true;
                 for(const auto &bus : bussesOnStop){
                     if (firstLine){
-                        os << "\"" << bus << "\"";
+                        os << "      " << bus << "\"\n";
                         firstLine = false;
                     } else {
-                        os << ", ";
-                        os << "\"" << bus << "\"";
+                        os << ",\n";
+                        os << "      " << bus << "\"\n";
                     }
                 }
-                os <<  "],\n\"request_id\": " << std::to_string(req.id) << "\n}, \n";
+                os <<  "    ],\n    request_id\": " << std::to_string(req.id) << "\n  }, \n";
             }
     }
     }
-    os << "]";
+    os << "]\n\n\n КОНЕЦ ОТВЕТА";
 }
