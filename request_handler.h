@@ -10,4 +10,6 @@ struct Request{
 };
 
 void processReply(std::ostream &os, BusCatalogue::TransportCatalogue& tc);
+void busProcess(BusCatalogue::TransportCatalogue &tc, const BusData::Request& req, std::ostream &os);
+void stopProcess(BusCatalogue::TransportCatalogue& tc, const BusData::Request &req, std::ostream &os);
 
