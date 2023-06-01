@@ -11,7 +11,9 @@ SOURCES += \
         json.cpp \
         json_reader.cpp \
         main.cpp \
+        map_renderer.cpp \
         request_handler.cpp \
+        svg.cpp \
         transport_catalogue.cpp
 
 # Default rules for deployment.
@@ -23,5 +25,7 @@ HEADERS += \
     geo.h \
     json.h \
     json_reader.h \
+    map_renderer.h \
     request_handler.h \
+    svg.h \
     transport_catalogue.h
